@@ -19,7 +19,13 @@ from sklearn.metrics import calinski_harabasz_score
 
 from Shape_Scan_median_k import *
 
+#%% read pickle file as dataframe
+df_online_1 = pd.read_pickle('Data /df_online_1.pkl')
+df_online_2 = pd.read_pickle('Data /df_online_2.pkl')
+df_online_3 = pd.read_pickle('Data /df_online_3.pkl')
 
+df_offline = pd.read_pickle('Data /df_offline.pkl')
+pattern_df = pd.read_pickle('Data /pattern_df.pkl')
 
 
 def kmeans_ts(data_scaled,k,slide_len,m,color_list):
