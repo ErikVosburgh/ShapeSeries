@@ -11,6 +11,7 @@ from sklearn.metrics import calinski_harabasz_score
 from EXO_2022 import df_exo_2022
 from EXO_2021 import df_1, df_2, df_3
 
+
 max_temp = max(df_exo_2022 ['Temperature'])
 
 min_temp = min(df_exo_2022 ['Temperature'])
@@ -85,10 +86,7 @@ def shape_scan(shape, data, param, unit, color_1, threshold):
         if target_df.loc[i, "ed_profile"] <= bottom:
             target_df.loc[i : i + m, "shape"] = target_df.loc[i : i + m, param]
 
-        # i+=m
-        # else:
-        # target_df.loc[i,'shape'] = np.nan
-    ###########################################################################################
+
     # Store and Plot shapes
 
     x = np.arange(0, m + 1, 1)
