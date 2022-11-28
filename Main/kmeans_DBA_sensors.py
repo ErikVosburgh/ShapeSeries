@@ -21,6 +21,9 @@ from Shape_Scan_median_k import *
 from tslearn.clustering import TimeSeriesKMeans
 from tslearn.datasets import CachedDatasets
 from tslearn.preprocessing import TimeSeriesScalerMeanVariance, TimeSeriesResampler
+# https://towardsdatascience.com/time-series-clustering-deriving-trends-and-archetypes-from-sequential-data-bb87783312b4
+# https://tslearn.readthedocs.io/en/stable/auto_examples/clustering/plot_kmeans.html#sphx-glr-auto-examples-clustering-plot-kmeans-py
+
 #%% read pickle file as dataframe
 df_online_1 = pd.read_pickle('./Data/df_online_1.pkl')
 df_online_2 = pd.read_pickle('./Data/df_online_2.pkl')
