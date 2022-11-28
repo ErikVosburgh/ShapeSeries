@@ -11,6 +11,9 @@ from sklearn.metrics import calinski_harabasz_score
 from EXO_2022 import df_exo_2022
 from EXO_2021 import df_1, df_2, df_3
 
+max_temp = max(df_exo_2022 ['Temperature'])
+
+min_temp = min(df_exo_2022 ['Temperature'])
 
 # color_list = ['purple', 'red', 'green', 'yellow', 'pink', 'blue', 'black', 'violet', 'teal', 'brown', 'olive', 'cyan','orange']
 
