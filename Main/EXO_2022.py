@@ -59,104 +59,12 @@ df_5 = df_exo_2022[17300:23930]
 df_6 = df_exo_2022[25095:]
 
 df_exo_2022 = df_exo_2022[44786:].set_index('Date Time')
-#df_5 = df_exo_2022[17300:23930].set_index('Date Time')
-#df_6 = df_exo_2022[25095:].set_index('Date Time')
-
-#df_exo_2022 = df_exo_2022.set_index('Date Time')
+df_exo_2022.plot()
 
 max_temp = max(df_exo_2022 ['Temperature'])
 
 min_temp = min(df_exo_2022 ['Temperature'])
 
-#ANNOTATE WITH MAINTENENCE ACTIVITIES 
-if __name__ == "__main__":
-
-    #axes = df_4.plot(y=['Temperature', 'ORP', 'pH', 'Turbidity', 'Sp. Conductivity', 'fDOM'], color = [ 'orange', 'purple', 'red', 'brown', 'blue', 'green'], alpha=0.5, use_index=True, subplots=True)
-    #axes = df_4.plot(y=['Temperature', 'ORP', 'pH', 'Turbidity', 'Sp. Conductivity', 'fDOM'], color = [ 'orange', 'purple', 'red', 'brown', 'blue', 'green'], alpha=0.5, use_index=True, subplots=True)
-    
-    #axes = df_6.plot(y=['Temperature', 'ORP','pH','Turbidity','Sp. Conductivity', 'fDOM'], color = [ 'orange', 'purple','red', 'brown','blue', 'green'], alpha=0.5, use_index=True, subplots=True)
-    axes = df_exo_2022.plot(y=['Temperature'], color = [ 'orange'], alpha=0.5, use_index=True, subplots=True)
-# ANNOTATE WITH MAINTENENCE ACTIVITIES: #
-    for ax in axes:
-
-        #axes[1].axvline(dt.datetime(2022, 4, 25, 10, 20), color='purple', linestyle = 'dashed', alpha=0.5)
-        #axes[5].axvline(dt.datetime(2022, 4, 25, 10, 20), color='purple', linestyle = 'dashed', alpha=0.5)
-        #ax.axvline(dt.datetime(2022, 4, 22, 15, 25), color='orange', linestyle = 'dashed')
-        #axes[4].axvline(dt.datetime(2022, 5, 4, 10, 45), color='purple', linestyle = 'dashed')
-        #axes[3].axvline(dt.datetime(2022, 5, 4, 10, 45), color='purple', linestyle = 'dashed')
-        #axes[2].axvline(dt.datetime(2022, 5, 4, 10, 45), color='purple', linestyle = 'dashed')
-        #axes[3].axvline(dt.datetime(2022, 5, 5, 12, 10), color='grey', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 5, 31, 14, 00), color='orange', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 6, 1, 12, 00), color='green', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 6, 27, 15,5), color='green', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 7, 12, 11,3), color='orange', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 8, 5, 8,3), color='orange', linestyle = 'dashed')
-
-                
-        axes[0].set_ylabel("Deg. C")
-        #axes[1].set_ylabel("mv")
-        #axes[2].set_ylabel("pH")
-        #axes[3].set_ylabel("NTU")
-        #axes[4].set_ylabel("ms/cm")
-        #axes[5].set_ylabel("QSU")
-        
-        axes[0].legend(bbox_to_anchor=(1.0, .9))
-        #axes[1].legend(bbox_to_anchor=(1.2, 1.0))
-        #axes[2].legend(bbox_to_anchor=(1.0, 1.0))
-        #axes[3].legend(bbox_to_anchor=(1.0, 1.1))
-        plt.savefig('EXO_plt.png',dpi=300, bbox_inches = "tight") 
-
-#ANNOTATE WITH MAINTENENCE ACTIVITIES 
-if __name__ == "__main__":
-
-    #axes = df_4.plot(y=['Temperature', 'ORP', 'pH', 'Turbidity', 'Sp. Conductivity', 'fDOM'], color = [ 'orange', 'purple', 'red', 'brown', 'blue', 'green'], alpha=0.5, use_index=True, subplots=True)
-    #axes = df_4.plot(y=['Temperature', 'ORP', 'pH', 'Turbidity', 'Sp. Conductivity', 'fDOM'], color = [ 'orange', 'purple', 'red', 'brown', 'blue', 'green'], alpha=0.5, use_index=True, subplots=True)
-    
-    #axes = df_6.plot(y=['Temperature', 'ORP','pH','Turbidity','Sp. Conductivity', 'fDOM'], color = [ 'orange', 'purple','red', 'brown','blue', 'green'], alpha=0.5, use_index=True, subplots=True)
-    #axes = df_5.plot(y=['Temperature'], color = [ 'blue'], alpha=0.5, use_index=True, subplots=True)
-# ANNOTATE WITH MAINTENENCE ACTIVITIES: #
-    #for ax in axes:
-
-        #axes[1].axvline(dt.datetime(2022, 4, 25, 10, 20), color='purple', linestyle = 'dashed', alpha=0.5)
-        #axes[5].axvline(dt.datetime(2022, 4, 25, 10, 20), color='purple', linestyle = 'dashed', alpha=0.5)
-        #ax.axvline(dt.datetime(2022, 4, 22, 15, 25), color='orange', linestyle = 'dashed')
-        #axes[4].axvline(dt.datetime(2022, 5, 4, 10, 45), color='purple', linestyle = 'dashed')
-        #axes[3].axvline(dt.datetime(2022, 5, 4, 10, 45), color='purple', linestyle = 'dashed')
-        #axes[2].axvline(dt.datetime(2022, 5, 4, 10, 45), color='purple', linestyle = 'dashed')
-        #axes[3].axvline(dt.datetime(2022, 5, 5, 12, 10), color='grey', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 5, 31, 14, 00), color='orange', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 6, 1, 12, 00), color='green', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 6, 27, 15,5), color='green', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 7, 12, 11,3), color='orange', linestyle = 'dashed')
-        
-        #ax.axvline(dt.datetime(2022, 8, 5, 8,3), color='orange', linestyle = 'dashed')
-
-                
-        #axes[0].set_ylabel("Deg. C")
-        #axes[1].set_ylabel("mv")
-        #axes[2].set_ylabel("pH")
-        #axes[3].set_ylabel("NTU")
-        #axes[4].set_ylabel("ms/cm")
-        #axes[5].set_ylabel("QSU")
-        
-        #axes[0].legend(bbox_to_anchor=(1.0, .9))
-        #axes[1].legend(bbox_to_anchor=(1.2, 1.0))
-        #axes[2].legend(bbox_to_anchor=(1.0, 1.0))
-        #axes[3].legend(bbox_to_anchor=(1.0, 1.1))
-
-
-    
-    plt.savefig('EXO_plt.png',dpi=300, bbox_inches = "tight") 
-    plt.show()
 
 
 
