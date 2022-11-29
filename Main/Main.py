@@ -4,18 +4,28 @@ import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn_extra.cluster import KMedoids 
-
-from Shape_Scan_median_k import *
-from kmeans_sensors import *
-from kmedoids_sensors import *
-from Load_Data import *
 import random
+import datetime as dt
 from tabulate import tabulate
-
+from helper_functions import shape_scan, kmeans_ts, kmedoids_ts, load_ts_data
 
 
 
 #%% DEFINE OFFLINE/TRAINING-SET DATA 
+param = 'Temperature'
+units = 'Deg. C'
+
+
+df_online_1, df_online_2, df_online_3, df_offline, pattern_df = load_ts_data()
+df_offline.plot()
+plt.show()
+df_online_1.plot()
+plt.show()
+df_online_2.plot()
+plt.show()
+df_online_3.plot()
+
+#%% 
 param = 'Temperature'
 units = 'Deg. C'
 begin = '2022-09-04 00:00:00+00:00'
@@ -23,20 +33,25 @@ end = 	'2022-11-15 14:10:00+00:00'
 
 color_list = ['purple', 'red', 'green', 'violet', 'pink', 'blue', 'black', 'orange', 'teal', 'brown', 'olive', 'cyan','yellow']
 data_scaled = df_offline
+data_scaled.plot()
 
-#%% DEFINE CLUSTER PARAMETERS 
+#%% 
+
 slide_len_hrs = 24
 slide_len = slide_len_hrs*12
 hrs = 24
 m = hrs*12
-k = 8
-cluster_method = 'kmed'
+k = 5
+cluster_method = 'kmed' #Enter 'km' for kmeans, 'kmed' for kmedoids, 'manual' for manual
 
-#%% GET CLUSTERS
 
-thresh_df_km,std_df_km,centroids_km,SSE_km,CHS_km,SC_km  = kmeans_ts(data_scaled,k,slide_len,m, color_list)
+#%% 
+from manualcluster_sensors import thresh_manual,std_manual,centroids_manual
 thresh_df_kmed,std_df_kmed,centroids_kmed,SSE_kmed,CHS_kmed,SC_kmed  = kmedoids_ts(data_scaled,k,slide_len,m, color_list)
+thresh_df_km,std_df_km,centroids_km,SSE_km,CHS_km,SC_km  = kmeans_ts(data_scaled,k,slide_len,m, color_list)
 
+
+#%% 
 performance_table = [['Method', 'SSE', 'SC', 'CHS'], 
          ['Kmeans', SSE_km[k-1], SC_km, CHS_km], 
          ['Kmedoids', SSE_kmed[k-1], SC_kmed, CHS_kmed]]
@@ -47,8 +62,12 @@ if cluster_method == 'km':
     thresh_df,std_df,centroids,SSE,CHS,SC = thresh_df_km,std_df_km,centroids_km,SSE_km,CHS_km,SC_km
 if cluster_method == 'kmed':
     thresh_df,std_df,centroids,SSE,CHS,SC = thresh_df_kmed,std_df_kmed,centroids_kmed,SSE_kmed,CHS_kmed,SC_kmed
+if cluster_method =='manual':
+    thresh_df,std_df,centroids = thresh_manual,std_manual,centroids_manual
 
-#%% SCAN ONLINE DATA 
+
+#%% SCAN ONLINE DATA
+
 target_data = df_online_1
 match_idx = {}
 shape = {}
@@ -56,7 +75,7 @@ shape_dist_fltrd = {}
 shape_dist = {}
 
 for i in range(0,k): 
-    match_idx["{0}".format(i)],shape["{0}".format(i)],ts,shape_dist_fltrd["{0}".format(i)],shape_dist["{0}".format(i)] = shape_scan(centroids[i],target_data,param,units,color_list[i],thresh_df.iloc[0,i])
+    match_idx["{0}".format(i)],shape["{0}".format(i)],ts,shape_dist_fltrd["{0}".format(i)],shape_dist["{0}".format(i)] = shape_scan(centroids.iloc[:,i],target_data,param,units,color_list[i],thresh_df.iloc[0,i])
     
 shape_df = pd.DataFrame.from_dict(shape)
 shape_dist_fltrd_df = pd.DataFrame.from_dict(shape_dist_fltrd)
@@ -71,8 +90,9 @@ for i in range(0,k):
     
 mask_df = pd.DataFrame.from_dict(mask)
 
-#%% 
-##### CREATE NEW DATAFRAME OF SHAPE MATCHES #################################################################################################################
+
+#%% CREATE NEW DATAFRAME OF SHAPE MATCHES:
+
 data=target_data                       
 data = data.reset_index()
 b = data.loc[:,'Date Time']
@@ -89,20 +109,15 @@ for item in not_nan:
 dist_bool = symbol_series
 dist_bool.fillna(True,inplace=True)
 
-
-#%% 
-#####################################################################################
-
 ts_df = pd.concat([data.loc[:,'Date Time'],ts,shape_df], axis=1)
 symbol_df = ts_df.copy()
 
 for i in range(0,k):
     symbol_df['{0}'.format(i)].loc[symbol_series_post == '{0}'.format(i)] = median.get('{}'.format(i))
     symbol_df['{0}'.format(i)].loc[symbol_series_post != '{0}'.format(i)] = np.nan
-    symbol_df[param] = symbol_df[param].mask(~mask_df['{0}'.format(i)])    
+    symbol_df[param] = symbol_df[param].mask(~mask_df['{0}'.format(i)])  
 
-#%% FUZZY
-#####################################################################################
+#%% 'Fuzzy' Matching:
 symbol_df_fuzzy = symbol_df.copy()
 symbol_df_fuzzy = symbol_df_fuzzy.set_index('Date Time')
 symbol_df_fuzzy = symbol_df_fuzzy.drop([param],axis=1)
@@ -153,16 +168,13 @@ tsfuzzy.set_index(['Date Time'],inplace=True)
 
 ts_df= ts_df.reset_index()
 
-#for i in range(0,k):
-    #ts_df['{0}'.format(i)].loc[symbol_series_post != '{0}'.format(i)] = np.nan
 
-#%% SET INDICES
-#####################################################################################
+
+
+#%% REFORMAT DATAFRAMES FOR PLOTTING:
 ts_df= ts_df.set_index(['Date Time'])
 ts_df= ts_df.drop(['index'], axis=1)
 symbol_df= symbol_df.set_index(['Date Time'])
-#mp_df_mask = mp_df_mask.set_index(['Date Time'])
-#mp_df = mp_df.set_index(['Date Time'])
 # =============================================================================
 
 nan_count = symbol_series_post.count()
@@ -171,7 +183,10 @@ length = len(symbol_series_post)
 pcnt_match = round(((nan_count)/len(symbol_series_post))*100,2)
 
 
+
+
 #%% PLOT 1
+
 fig, axes = plt.subplots(nrows=3, ncols=1)
 ts_df.plot(y=[param], ax=axes[0], color = 'grey', alpha=1, use_index=True, subplots=True, legend=False)
 symbol_df[param].plot(y=[param], ax=axes[1], color = 'grey', alpha=1, use_index=True, subplots=True)
@@ -197,48 +212,5 @@ axes[1].set_ylabel("{} - standardized".format(units))
 plt.savefig('Shape_Scan.png',dpi=300, bbox_inches = "tight") 
 fig.suptitle('{}% of subsequences \n are a match'.format(pcnt_match))
 plt.show()   
-
-
-#%% PLOT 2
-symbol_df = symbol_df.reset_index()
-not_null = symbol_df[symbol_df[param].notnull()].index.tolist()
-random_idx = random.choice(not_null)
-
-idx = random_idx
-#idx = 8000
-date = b[idx]
-data=target_data.reset_index()
-target = (data['scaled'][idx:idx+m].to_frame()).reset_index()
-target = target.drop(columns = ['index'])
-
-ptrn_dist = {}
-
-for i in range(0,k):
-    ptrn_dist["{0}".format(i)] = round(shape_dist_df.loc[idx,"{0}".format(i)],2)
-
-target_prototype = pd.concat([centroids,target], axis=1)
-
-shape_dist_df.iloc[0,1]
-#############################################################################
-fig, axes = plt.subplots(nrows=k,figsize=(11,10))
-
-for i in range(0,k):
-    target_prototype.plot(y=[i], ax=axes[i], color = color_list[i], alpha=1, use_index=True, subplots=True, legend=False)
-    target_prototype.plot(y=['scaled'], ax=axes[i], color = 'grey', alpha=1)
-    axes[i].get_legend().remove()
-    dist = ptrn_dist.get('{}'.format(i))
-    std = round(std_df.loc[0,'{}'.format(i)],2)
-    axes[i].set_xticks([])
-
-    thresh = round(thresh_df.loc[0,'{}'.format(i)],2)
-    axes[i].legend(['dist. from pattern is {}, \n similarity threshold = {}, \n one stdev. = {}'.format(dist,thresh,std)],bbox_to_anchor=(1, 1), prop={"size":10})
-
-#plt.subplots_adjust(wspace=.1, hspace=.1)
-fig.tight_layout()
-fig.suptitle('Unmatched subsequence - {}'.format(date))
-plt.savefig('Target_prototype_compare.png',dpi=300, bbox_inches = "tight") 
-plt.show()
-
-#############################################################################
 
 

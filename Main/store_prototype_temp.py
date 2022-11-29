@@ -7,16 +7,21 @@ from scipy.stats import iqr
 import math
 
 
-
+#training_data = data_scaled
+#idx_start = 1350
+#param = 'Temperature'
+#units = 'units'
+#percentile = 5
+#color_1 = 'blue'
 
 ### LOAD TEMPLATE SHAPE DATA: ##########################################################################
-def shape_prototype(data,idx_start,param,unit,color_1, percentile):
+def shape_prototype(data,idx_start,param,units,color_1, percentile):
 
     #data = data.reset_index()
     data_target = data
     #data = data.interpolate(method='pad')
     param = param
-    unit = unit
+    unit = units
     
     #NORMALIZE 
     data = data_target
@@ -29,9 +34,9 @@ def shape_prototype(data,idx_start,param,unit,color_1, percentile):
     idx_start = idx_start
     shape_data = data['scaled'][idx_start:idx_start+m]
     
-    axes = shape_data.plot(y=['scaled'], color = [ 'blue'], alpha=0.5, use_index=True, subplots=True)
+    #axes = shape_data.plot(y=['scaled'], color = [ 'blue'], alpha=0.5, use_index=True, subplots=True)
     #axes[1].tick_params(labelrotation=45)
-    plt.show()
+    #plt.show()
            
     ###store shape in data frame 
     shape_data = data[idx_start:idx_start+m]
@@ -88,9 +93,9 @@ def shape_prototype(data,idx_start,param,unit,color_1, percentile):
     length = sum(condition)
     
     while i < len(condition):
-        #print(i)
+
         if math.isnan(target_df.loc[i,'ed_profile'])==False: 
-            print(i)
+
             matches.iloc[0:0+m,j] = data.loc[i:i+m-1,'scaled']
             match_idx.append(i)
             j += 1 

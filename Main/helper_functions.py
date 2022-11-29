@@ -763,7 +763,7 @@ def load_ts_data():
     df_offline = df_offline.reset_index()
     sensor = df_offline.loc[:, "scaled"]
     sensor = sensor.interpolate(method="pad")
-    sensor.plot()
+    #sensor.plot()
     sensor = sensor.values  # convert to array
 
     #%%## SPLIT TS INTO PATTERNS, STORE IN DATA FRAME
