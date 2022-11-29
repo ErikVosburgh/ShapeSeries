@@ -14,16 +14,7 @@ from helper_functions import shape_scan, kmeans_ts, kmedoids_ts, load_ts_data
 #%% DEFINE OFFLINE/TRAINING-SET DATA 
 param = 'Temperature'
 units = 'Deg. C'
-
-
 df_online_1, df_online_2, df_online_3, df_offline, pattern_df = load_ts_data()
-df_offline.plot()
-plt.show()
-df_online_1.plot()
-plt.show()
-df_online_2.plot()
-plt.show()
-df_online_3.plot()
 
 #%% 
 param = 'Temperature'
@@ -42,7 +33,7 @@ slide_len = slide_len_hrs*12
 hrs = 24
 m = hrs*12
 k = 5
-cluster_method = 'kmed' #Enter 'km' for kmeans, 'kmed' for kmedoids, 'manual' for manual
+cluster_method = 'manual' #Enter 'km' for kmeans, 'kmed' for kmedoids, 'manual' for manual
 
 
 #%% 

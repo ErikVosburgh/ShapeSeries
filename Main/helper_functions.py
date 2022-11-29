@@ -433,7 +433,7 @@ def kmeans_ts(data_scaled, k, slide_len, m, color_list):
 def kmedoids_ts(data_scaled, k, slide_len, m, color_list):
     sensor = data_scaled.loc[:, "scaled"]
     sensor = sensor.interpolate(method="pad")
-    #sensor.plot()
+
     sensor = sensor.values  # convert to array
 
     #%%## EXTRACT ALL SHAPES AND STORE IN DATA FRAME
