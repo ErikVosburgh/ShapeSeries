@@ -31,7 +31,6 @@ pattern_df = pd.read_pickle('Data /pattern_df.pkl')
 def kmeans_ts(data_scaled,k,slide_len,m,color_list):
     sensor = data_scaled.loc[:,'scaled']
     sensor = sensor.interpolate(method='pad')
-    sensor.plot()
     sensor = sensor.values #convert to array
     
     
